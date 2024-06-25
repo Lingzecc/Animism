@@ -5,9 +5,10 @@ import os
 from ChatChat import ChatChat
 import torch
 from langchain.chains.llm import LLMChain
-from config import get_config
+from config import Config
 # 初始化参数
-config = get_config()
+cfg = Config()
+config = cfg.get_config()
 tokenizer_name_or_path = config['tokenizer_name_or_path']
 model_name_or_path = config['model_name_or_path']
 model_cache_path = config['model_cache_path']
@@ -17,7 +18,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_name_or_path,
                                           trust_remote_code=True, 
                                           cache_dir=os.path.join(model_cache_path, model_name_or_path))
 model = AutoModel.from_pretrained(model_name_or_path, 
-                                  trust_remote_code=True, 
+                                  trust_remote_code=True,
                                   cache_dir=os.path.join(model_cache_path, model_name_or_path)
                                   ).to(device).float()
 model = model.eval()
