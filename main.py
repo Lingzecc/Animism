@@ -8,9 +8,10 @@ from ChatChat import ChatChat
 # from tools.Calculator import Calculator
 # from tools.Weather import Weather
 # from tools.DistanceConversion import DistanceConverter
-from config import get_config
-# 初始化
-config = get_config()
+from config import Config
+# 初始化参数
+cfg = Config()
+config = cfg.get_config()
 tokenizer_name_or_path = config['tokenizer_name_or_path']
 model_name_or_path = config['model_name_or_path']
 model_cache_path = config['model_cache_path']
