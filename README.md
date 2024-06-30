@@ -25,6 +25,5 @@ cli_demo.py----终端窗口交互
 webui.py----网页窗口交互  
 LICENSE----开源协议2.0  
 requirements.txt----相关包      //可以使用---安装--> pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple <--安装  
-README----这是什么？你说这是什么？你正在看什么？  
 
 ---
