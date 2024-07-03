@@ -1,6 +1,6 @@
 #---------------------------------------------------------------------------
 protobuf==3.19.0
-transformers>=4.27.1
+transformers==4.21.0
 cpm-kernels==1.0.11
 huggingface-hub==0.23.1
 langchain==0.2.1
@@ -13,6 +13,7 @@ numpy==1.26.4
 tokenizers==0.13.3
 tqdm==4.66.4
 urllib3==2.2.1
+peft
 torch==2.1.2 #这个建议自己下,根据自己的设备选择合适的（也就是说要考虑使用者是否使用GPU了，淦，你们使用GPU的能不能给我打点钱给我整一个啊）
              # https://pytorch.org/
 gradio>=4.31.0
