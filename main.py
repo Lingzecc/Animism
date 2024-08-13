@@ -1,27 +1,13 @@
-from langchain.chains.llm import LLMChain
-# from langchain.agents import AgentExecutor, create_structured_chat_agent, load_tools
-# from langchain_core.messages import AIMessage, HumanMessage
-from langchain.memory import ConversationBufferMemory
-from langchain.prompts import PromptTemplate
-from Templates import *
-from ChatChat import ChatChat
-# from tools.Calculator import Calculator
-# from tools.Weather import Weather
-# from tools.DistanceConversion import DistanceConverter
-from config import Config
-# 初始化参数
-cfg = Config()
-config = cfg.get_config()
-tokenizer_name_or_path = config['tokenizer_name_or_path']
-model_name_or_path = config['model_name_or_path']
-model_cache_path = config['model_cache_path']
-device = config['device']
+from flask import Flask, send_from_directory
 
-prompt_template = Templates()
-prompt = PromptTemplate(input_variables=["chat_history","human_input"], template=prompt_template)
-if __name__ == "__main__":
-    llm = ChatChat()
-    llm.load_model(model_name_or_path)
-    memory = ConversationBufferMemory(memory_key="chat_history")
-    chain = LLMChain(llm=llm, prompt=prompt,verbose=True,memory=memory)
-    chain.predict(human_input="你好")
+app = Flask(__name__, static_folder='./')
+@app.route('/')
+def index():
+    return app.send_static_file('./live2d.html')
+
+@app.route('/assets/<path:path>')
+def serve_static(path):
+    return send_from_directory('./assets/',path)
+
+if __name__ == '__main__':
+    app.run(port=4800, debug=True, host="0.0.0.0")
