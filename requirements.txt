@@ -1,28 +1,30 @@
 #---------------------------------------------------------------------------
-protobuf==3.19.0
-transformers>=4.27.1
-cpm-kernels==1.0.11
-huggingface-hub==0.23.1
-langchain==0.2.1
-langchain-community==0.2.1
-langchain-core==0.2.3
-langchain-text==0.2.0
-langsmith==0.1.68
-lxml==4.9.4
-numpy==1.26.4
-tokenizers==0.13.3
-tqdm==4.66.4
-urllib3==2.2.1
-torch==2.1.2 #这个建议自己下,根据自己的设备选择合适的（也就是说要考虑使用者是否使用GPU了，淦，你们使用GPU的能不能给我打点钱给我整一个啊）
+protobuf
+transformers
+cpm-kernels
+huggingface-hub
+langchain
+langchain-community
+langchain-core
+langsmith
+lxml
+numpy
+tokenizers
+tqdm
+urllib3
+peft
+datasets
+torch>=2.1.2 #��������Լ���,�����Լ����豸ѡ����ʵģ�Ҳ����˵Ҫ����ʹ�����Ƿ�ʹ��GPU�ˣ��ƣ�����ʹ��GPU���ܲ��ܸ��Ҵ��Ǯ������һ������
              # https://pytorch.org/
 gradio>=4.31.0
 pandas>=2.1.2
 
 
+
 #---------------------------------------------------------------------------
 #pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 #---------------------------------------------------------------------------
-# 考虑到上面命令可能会出现问题，提供第二方案（手动）：
-# pip install 工具库名 -i https://pypi.tuna.tsinghua.edu.cn/simple
+# ���ǵ�����������ܻ�������⣬�ṩ�ڶ��������ֶ�����
+# pip install ���߿��� -i https://pypi.tuna.tsinghua.edu.cn/simple
 #---------------------------------------------------------------------------
-#以上是我的相关配置，若出现版本冲突请根据自己的情况调整
+#�������ҵ�������ã������ְ汾��ͻ������Լ����������
