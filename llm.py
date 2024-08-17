@@ -13,7 +13,6 @@ from peft import PeftModel
 import torch
 from load_config import Load_Config
 from optimum.intel import OVModelForCausalLM
-import re
 # 初始化参数
 cfg = Load_Config()
 config = cfg.get_config()
