@@ -1,9 +1,0 @@
-{
-    "model_name_or_path": "models/llm/",
-    "tokenizer_name_or_path": "embeddings/",
-    "tts_path":"models/tts/",
-    "asr_path":"models/asr/",
-    "model_cache_path": "cache/",
-    "device": "auto",
-    "finetune_weight_path":"finetune_weight/"
-}

@@ -1,14 +1,13 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, DataCollatorForSeq2Seq, Trainer
 from datasets import Dataset
 from peft import get_peft_config, get_peft_model, LoraConfig, TaskType
-from config import Config
+from load_config import Load_Config
 import torch
 from trl import SFTTrainer
 import pandas as pd
 # 初始化参数
-cfg = Config()
+cfg = Load_Config()
 config = cfg.get_config()
-tokenizer_name_or_path = config['tokenizer_name_or_path']
 model_name_or_path = config['model_name_or_path']
 model_cache_path = config['model_cache_path']
 device = config["device"]
