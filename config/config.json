@@ -1,0 +1,9 @@
+{
+    "model_name_or_path": "models/llm/CPM-2B",
+    "asr_path":"models/asr/whisper",
+    "tts_path":"models/tts/",
+    "model_cache_path": "cache/",
+    "device": "cpu",
+    "finetune_weight_path":"finetune_weight/",
+    "template":"templates/allium.txt"
+}

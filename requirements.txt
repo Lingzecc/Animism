@@ -1,5 +1,5 @@
 protobuf
-transformers
+transformers==4.41.2
 cpm-kernels
 huggingface-hub
 langchain
@@ -15,3 +15,9 @@ datasets
 flask
 torch
 pandas
+trl
+typing
+optimum[openvino,nncf]
+onnx
+py-cpuinfo
+pyaudio
