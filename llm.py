@@ -64,12 +64,24 @@ def init_chat_template(generate_config):
 
 
 model_input = [{"role": "system", "content": system_message}]
-
+system_start_ids, user_start_ids, bot_start_ids, system_ids = init_chat_template(generate_config)
+history_outputs = system_ids
 print("=====预设生成参数:", generate_config)
 while True:
     query = input("我：")
     model_input.append({"role": "user", "content": query})
-    system_start_ids, user_start_ids, bot_start_ids, system_ids = init_chat_template(generate_config)
-    model_output = generator(model_input, max_new_tokens=300, top_k=5, top_p=0.8, temperature=0.3, repetition_penalty=1.1, do_sample=True)
+    inputs = tokenizer.encode(query, return_tensors="pt").to(model.device)
+    inputs = torch.concat([history_outputs, user_start_ids, inputs, bot_start_ids], dim=-1).long()
+    history_outputs = model.generate(inputs, 
+                    max_new_tokens=generate_config['max_new'], 
+                    top_k=generate_config['top_k'], 
+                    top_p=generate_config['top_p'], 
+                    temperature=generate_config['temperature'], 
+                    repetition_penalty=generate_config['repetition_penalty'], 
+                    do_sample=generate_config['do_sample'])
+    # 删除</s>
+    if history_outputs[0][-1] == 2:
+        history_outputs = history_outputs[:, :-1]
 
-    print('Model:', system_ids)
+    outputs = history_outputs[0][len(inputs[0]):]
+    print('\nModel:', tokenizer.decode(outputs))
