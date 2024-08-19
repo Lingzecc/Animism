@@ -5,5 +5,5 @@
     "model_cache_path": "cache/",
     "device": "cpu",
     "finetune_weight_path":"finetune_weight/",
-    "template":"templates/allium.txt"
+    "template":"templates/心音.txt"
 }
