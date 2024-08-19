@@ -1,7 +1,7 @@
 import os  # 导入os模块，提供与操作系统交互的功能。
 import soundfile  # 导入soundfile模块，用于简化声音文件的读写操作。
 from funasr import AutoModel  # 从funasr模块导入AutoModel类，funasr不是标准库，可能是自定义或特定库。
-
+from recording import record_audio
 def recognize_speech(wav_file, model, chunk_size, encoder_chunk_look_back, decoder_chunk_look_back):
     # 定义recognize_speech函数，用于使用语音识别模型处理音频文件。
     # 读取WAV文件，获取音频数据和采样率。
@@ -26,8 +26,8 @@ def whisper():
     encoder_chunk_look_back = 4  # 定义编码器自注意力的回看录音块数。
     decoder_chunk_look_back = 1  # 定义解码器交叉注意力的回看编码器录音块数。
 
-    audio_folder_path = 'E:\\Audiofiles'  # 定义音频文件保存的文件夹路径。
-    audio_file_name = 'input.wav'  # 定义音频文件的名称。
+    audio_folder_path = '../data/asr_output/'  # 定义音频文件保存的文件夹路径。
+    audio_file_name = 'test.wav'  # 定义音频文件的名称。
     audio_file_path = os.path.join(audio_folder_path, audio_file_name)  # 拼接完整的音频文件路径。
 
     # 无限循环，等待用户输入。
@@ -35,7 +35,7 @@ def whisper():
         user_input = input("是否开始录音？输入 '是' 开始录音，输入 '退出' 结束程序：")  # 提示用户输入。
         if user_input == "是":  # 如果用户选择开始录音。
             record_audio(audio_file_path, 5)  # 调用record_audio函数进行录音。
-            recognize_speech(audio_file_path, model, chunk_size, encoder_chunk_look_back, decoder_chunk_look_back)  # 调用recognize_speech函数进行语音识别。
+            text = recognize_speech(audio_file_path, model, chunk_size, encoder_chunk_look_back, decoder_chunk_look_back)  # 调用recognize_speech函数进行语音识别。
         elif user_input == "退出":  # 如果用户选择退出。
             print("程序退出。")  # 打印退出提示，并退出循环。
             break  # 退出循环，结束程序。

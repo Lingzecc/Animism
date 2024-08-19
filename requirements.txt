@@ -1,11 +1,6 @@
 protobuf
 transformers==4.41.2
-cpm-kernels
 huggingface-hub
-langchain
-langchain-community
-langchain-core
-langsmith
 lxml
 numpy
 tokenizers
@@ -17,7 +12,6 @@ torch
 pandas
 trl
 typing
-optimum[openvino,nncf]
-onnx
-py-cpuinfo
 pyaudio
+ffmpeg
+torchaudio

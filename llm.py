@@ -67,8 +67,7 @@ model_input = [{"role": "system", "content": system_message}]
 system_start_ids, user_start_ids, bot_start_ids, system_ids = init_chat_template(generate_config)
 history_outputs = system_ids
 print("=====预设生成参数:", generate_config)
-while True:
-    query = input("我：")
+    query : str = ""
     model_input.append({"role": "user", "content": query})
     inputs = tokenizer.encode(query, return_tensors="pt").to(model.device)
     inputs = torch.concat([history_outputs, user_start_ids, inputs, bot_start_ids], dim=-1).long()
