@@ -82,5 +82,5 @@ print("=====预设生成参数:", generate_config)
     if history_outputs[0][-1] == 2:
         history_outputs = history_outputs[:, :-1]
 
-    outputs = history_outputs[0][len(inputs[0]):]
-    print('\nModel:', tokenizer.decode(outputs))
+    outputs = tokenizer.decode(history_outputs[0][len(inputs[0]):])
+    return outputs
