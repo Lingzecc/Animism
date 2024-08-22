@@ -106,6 +106,18 @@
         model.internalModel.coreModel.setParameterValueById('ParamMouthOpenY', v);
       }
 
+      setInterval(() => {
+        $.ajax({
+          type: "GET",
+          url: "/api/get_mouth_y",
+          dataType: 'json',
+          async: true,
+          success(data) {
+            setMouthOpenY(parseFloat(data.y))
+          },
+        });
+      }, 10)
+
       document.getElementById("shoubing").onclick = () => {
         model.expression("shoubing");
       }

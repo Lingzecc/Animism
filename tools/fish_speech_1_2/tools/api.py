@@ -405,7 +405,7 @@ def parse_args():
         default="checkpoints/fish-speech-1.2-sft/firefly-gan-vq-fsq-4x1024-42hz-generator.pth",
     )
     parser.add_argument("--decoder-config-name", type=str, default="firefly_gan_vq")
-    parser.add_argument("--device", type=str, default="cuda")
+    parser.add_argument("--device", type=str, default="cpu")
     parser.add_argument("--half", action="store_true")
     parser.add_argument("--compile", action="store_true")
     parser.add_argument("--max-text-length", type=int, default=0)
@@ -433,50 +433,51 @@ app = Kui(
 )
 
 
-def start_fish_spich_api(url = "http://127.0.0.1:8000"):
-    import threading
+import threading
 
-    import uvicorn
+import uvicorn
 
-    args = parse_args()
-    args.precision = torch.half if args.half else torch.bfloat16
+args = parse_args()
+args.precision = torch.half if args.half else torch.bfloat16
 
-    logger.info("Loading Llama model...")
-    llama_queue = launch_thread_safe_queue(
-        checkpoint_path=args.llama_checkpoint_path,
-        device=args.device,
-        precision=args.precision,
-        compile=args.compile,
-    )
-    logger.info("Llama model loaded, loading VQ-GAN model...")
+logger.info("Loading Llama model...")
+llama_queue = launch_thread_safe_queue(
+    checkpoint_path=args.llama_checkpoint_path,
+    device=args.device,
+    precision=args.precision,
+    compile=args.compile,
+)
+logger.info("Llama model loaded, loading VQ-GAN model...")
 
-    decoder_model = load_decoder_model(
-        config_name=args.decoder_config_name,
-        checkpoint_path=args.decoder_checkpoint_path,
-        device=args.device,
-    )
+decoder_model = load_decoder_model(
+    config_name=args.decoder_config_name,
+    checkpoint_path=args.decoder_checkpoint_path,
+    device=args.device,
+)
 
-    logger.info("VQ-GAN model loaded, warming up...")
+logger.info("VQ-GAN model loaded, warming up...")
 
-    # Dry run to check if the model is loaded correctly and avoid the first-time latency
-    list(
-        inference(
-            InvokeRequest(
-                text="Hello world.",
-                reference_text=None,
-                reference_audio=None,
-                max_new_tokens=0,
-                top_p=0.7,
-                repetition_penalty=1.2,
-                temperature=0.7,
-                emotion=None,
-                format="wav",
-                ref_base=None,
-                ref_json=None,
-            )
+# Dry run to check if the model is loaded correctly and avoid the first-time latency
+list(
+    inference(
+        InvokeRequest(
+            text="Hello world.",
+            reference_text=None,
+            reference_audio=None,
+            max_new_tokens=0,
+            top_p=0.7,
+            repetition_penalty=1.2,
+            temperature=0.7,
+            emotion=None,
+            format="wav",
+            ref_base=None,
+            ref_json=None,
         )
     )
+)
 
-    logger.info(f"Warming up done, starting server at http://{url}")
-    host, port = url.split(":")
-    uvicorn.run(app, host=host, port=int(port), workers=args.workers, log_level="info")
+logger.info(f"Warming up done, starting server at http://{args.listen}")
+host, port = args.listen.split(":")
+# def start_fish(host="http://127.0.0.1" , port = "8000"):
+#     logger.info(f"Warming up done, starting server at http://{host}:{port}")
+uvicorn.run(app, host=host, port=int(port), workers=args.workers, log_level="info")
