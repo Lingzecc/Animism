@@ -433,7 +433,7 @@ app = Kui(
 )
 
 
-if __name__ == "__main__":
+def start_fish_spich_api(url = "http://127.0.0.1:8000"):
     import threading
 
     import uvicorn
@@ -477,6 +477,6 @@ if __name__ == "__main__":
         )
     )
 
-    logger.info(f"Warming up done, starting server at http://{args.listen}")
-    host, port = args.listen.split(":")
+    logger.info(f"Warming up done, starting server at http://{url}")
+    host, port = url.split(":")
     uvicorn.run(app, host=host, port=int(port), workers=args.workers, log_level="info")

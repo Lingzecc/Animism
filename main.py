@@ -28,7 +28,7 @@ def convert_audio_to_wav(input_audio_path, output_wav_path):
 # 网页投射
 @app.route('/')
 def index():
-    return app.send_static_file('./test.html')
+    return app.send_static_file('./live2d.html')
 # 投射皮套文件夹
 @app.route('/assets/<path:path>')
 def serve_static(path):
