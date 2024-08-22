@@ -41,9 +41,9 @@
     };
 
     mediaRecorder.onstop = async () => {
-      const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
       const formData = new FormData();
-      formData.append('audioFile', audioBlob, 'recorded_audio.webm');
+      formData.append('audioFile', audioBlob, 'recorded_audio.wav');
 
       try {
         await fetch('/upload', {
@@ -100,24 +100,6 @@
       //模型位置坐标
       model.y = innerHeight * 0.01;
       model.x = innerWidth * 0.125;
-
-      const setMouthOpenY = v => {
-        v = Math.max(0, Math.min(1, v));
-        model.internalModel.coreModel.setParameterValueById('ParamMouthOpenY', v);
-      }
-
-      setInterval(() => {
-        $.ajax({
-          type: "GET",
-          url: "/api/get_mouth_y",
-          dataType: 'json',
-          async: true,
-          success(data) {
-            setMouthOpenY(parseFloat(data.y))
-          },
-        });
-      }, 10)
-
       document.getElementById("shoubing").onclick = () => {
         model.expression("shoubing");
       }
@@ -131,6 +113,25 @@
       document.getElementById("bizui").onclick = () => {
         setMouthOpenY(0)
       }
+      // 口型大小定义
+      const setMouthOpenY = v => {
+        v = Math.max(0, Math.min(1, v));
+        model.internalModel.coreModel.setParameterValueById('ParamMouthOpenY', v);
+      }
+      // ajax异步检测(会爆)
+      setInterval(() => {
+        $.ajax({
+          type: "GET",
+          url: "/api/get_mouth_y",
+          dataType: 'json',
+          async: true,
+          success(data) {
+            setMouthOpenY(parseFloat(data.y))
+          },
+        });
+      }, 10)
+
+
     });
 
   })();

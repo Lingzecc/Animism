@@ -7,6 +7,7 @@ import librosa
 import time
 import pygame
 import numpy as np
+# 使用前先运行api(tools\fish_speech_1_2\tools\api.py)
 host = "127.0.0.1"
 port = "8000"
 
@@ -40,7 +41,7 @@ base64_audio = wav_to_base64(None)
 ref_text = None
 if ref_text:
     ref_text = read_ref_text(ref_text)
-
+# 开启fish-speech的api后访问api转换返回语音
 def tts(text, host, port, tmp_audio_path):
     url = f"http://{host}:{port}/v1/invoke"
     data = {
@@ -70,8 +71,8 @@ def tts(text, host, port, tmp_audio_path):
         print(f"Request failed with status code {response.status_code}")
         print(response.json())
         
-
-def tts_and_play_audio(text, tmp_audio_path):
+# 根据语音音频转数字写入文本,通过ajax异步检测文本变化实现口型实时操作(会爆栈,只是时间问题)
+def tts_and_play_audio(text, tmp_audio_path='data/tts_output'):
     tts(text, host, port, tmp_audio_path)
     pygame.mixer.init()
     pygame.mixer.music.load(f"{tmp_audio_path}/tmp.wav")  
@@ -101,5 +102,3 @@ def tts_and_play_audio(text, tmp_audio_path):
     time.sleep(0.1)
     with open(f"{tmp_audio_path}/tmp.txt", "w") as f:
         f.write("0")
-
-tts_and_play_audio(input("说："), 'data/tts_output')

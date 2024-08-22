@@ -4,8 +4,6 @@ import os
 import json
 app = Flask(__name__, static_folder='./')
 
-
- 
 # 音频转格式
 def convert_audio_to_wav(input_audio_path, output_wav_path):  
     """  
@@ -53,7 +51,7 @@ def upload_file():
         filename = file.filename  
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(filepath)
-        convert_audio_to_wav(filepath,"data/record_audio/recorded_audio.wav")  
+        # convert_audio_to_wav(filepath,"data/record_audio/recorded_audio.wav")  
         return '文件上传成功'  
 
 
