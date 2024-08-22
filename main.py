@@ -59,7 +59,7 @@ def upload_file():
 
 @app.route('/api/get_mouth_y')
 def api_get_one_account():
-    with open("tmp.txt", "r") as f:
+    with open("data/tts_output/tmp.txt", "r") as f:
         return json.dumps({
             "y": f.read()
         })
