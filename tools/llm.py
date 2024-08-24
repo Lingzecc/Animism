@@ -1,7 +1,7 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 from load_config import Load_Config
 import torch
-from tools.tts import tts_and_play_audio
+
 # 初始化参数
 cfg = Load_Config()
 config = cfg.get_config()
@@ -65,26 +65,26 @@ def init_chat_template(generate_config):
 
 # 模板
 template = [{"role": "system", "content": system_message}]
-system_start_ids, user_start_ids, bot_start_ids, system_ids = init_chat_template(generate_config)
-history_outputs = system_ids
-print("=====预设生成参数:", generate_config)
-model_input : list = template
-# 输入
-query : str = "你好，你可以简单介绍一下你自己吗？"
-model_input.append({"role": "user", "content": query})
-inputs = tokenizer.encode(query, return_tensors="pt").to(model.device)
-inputs = torch.concat([history_outputs, user_start_ids, inputs, bot_start_ids], dim=-1).long()
-history_outputs = model.generate(inputs, 
-                max_new_tokens=generate_config['max_new'], 
-                top_k=generate_config['top_k'], 
-                top_p=generate_config['top_p'], 
-                temperature=generate_config['temperature'], 
-                repetition_penalty=generate_config['repetition_penalty'], 
-                do_sample=generate_config['do_sample'])
-# 删除</s>
-if history_outputs[0][-1] == 2:
-    history_outputs = history_outputs[:, :-1]
-# 模型输出
-outputs = tokenizer.decode(history_outputs[0][len(inputs[0]):])
-# 语音合成和口型操作
-tts_and_play_audio(outputs)
+def chat(template=template, query="你好，你可以简单介绍一下你自己吗？"):
+    system_start_ids, user_start_ids, bot_start_ids, system_ids = init_chat_template(generate_config)
+    history_outputs = system_ids
+    print("=====预设生成参数:", generate_config)
+    model_input : list = template
+    # 输入
+    query : str = query
+    model_input.append({"role": "user", "content": query})
+    inputs = tokenizer.encode(query, return_tensors="pt").to(model.device)
+    inputs = torch.concat([history_outputs, user_start_ids, inputs, bot_start_ids], dim=-1).long()
+    history_outputs = model.generate(inputs, 
+                    max_new_tokens=generate_config['max_new'], 
+                    top_k=generate_config['top_k'], 
+                    top_p=generate_config['top_p'], 
+                    temperature=generate_config['temperature'], 
+                    repetition_penalty=generate_config['repetition_penalty'], 
+                    do_sample=generate_config['do_sample'])
+    # 删除</s>
+    if history_outputs[0][-1] == 2:
+        history_outputs = history_outputs[:, :-1]
+    # 模型输出
+    outputs = tokenizer.decode(history_outputs[0][len(inputs[0]):])
+    return outputs

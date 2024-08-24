@@ -41,9 +41,9 @@
     };
 
     mediaRecorder.onstop = async () => {
-      const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+      const audioBlob = new Blob(audioChunks, { type: "audio/webm; codecs=opus" });
       const formData = new FormData();
-      formData.append('audioFile', audioBlob, 'recorded_audio.wav');
+      formData.append('audioFile', audioBlob, 'recorded_audio.webm');
 
       try {
         await fetch('/upload', {
@@ -118,7 +118,7 @@
         v = Math.max(0, Math.min(1, v));
         model.internalModel.coreModel.setParameterValueById('ParamMouthOpenY', v);
       }
-      // ajax异步检测(会爆)
+      // ajax异步检测
       setInterval(() => {
         $.ajax({
           type: "GET",
@@ -127,9 +127,16 @@
           async: true,
           success(data) {
             setMouthOpenY(parseFloat(data.y))
+            if (parseFloat(data.y) !== 0) {
+              // 如果y值不是0，播放音频  
+              if (audioElement.paused) {
+                var audioElement = new Audio('/audio/tmp.wav');
+                audioElement.play();
+              }
+            }
           },
         });
-      }, 10)
+      }, 100)
 
 
     });
