@@ -85,7 +85,7 @@ def tts_and_play_audio(text, tmp_audio_path='data/tts_output'):
     x= np.log(x) + 1
     x = x  / max(x) * 1.4
 
-    # pygame.mixer.music.play()
+    pygame.mixer.music.play()
     s_time = time.time()
     try:
         for _ in range(int(len(x) / 800)):
