@@ -7,7 +7,7 @@ import librosa
 import time
 import pygame
 import numpy as np
-# 使用前先运行api(tools\fish_speech_1_2\tools\api.py)
+# 使用前先运行api启动fish-speech(tools\fish_speech_1_2\tools\api.py)
 host = "127.0.0.1"
 port = "8000"
 
@@ -27,14 +27,6 @@ def read_ref_text(ref_text):
             return file.read()
     return ref_text
 
-
-def play_audio(audio_content, format, channels, rate):
-    p = pyaudio.PyAudio()
-    stream = p.open(format=format, channels=channels, rate=rate, output=True)
-    stream.write(audio_content)
-    stream.stop_stream()
-    stream.close()
-    p.terminate()
 
 base64_audio = wav_to_base64(None)
 
