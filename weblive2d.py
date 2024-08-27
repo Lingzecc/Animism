@@ -19,7 +19,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER    
 # 获取前端音频保存到UPLOAD_FOLDER
 @app.route('/upload', methods=['POST'])  
-def upload_file():  
+def record_audio2wav():  
     if 'audioFile' not in request.files:  
         flash('没有文件部分')  
         return redirect(request.url)  
