@@ -1,9 +1,9 @@
 {
-    "model_name_or_path": "D:/PORJECT/Animism/ALLIUM_copy/models/Index_1_9B/",
+    "model_name_or_path": "D:/PORJECT/Animism/models/Index_1_9B",
     "asr_path":"models/whisper-largev3",
     "tts_path":"models/fish-speech-1.2-sft",
     "model_cache_path": "cache/",
     "device": "cpu",
     "finetune_weight_path":"finetune_weight/",
-    "template":"templates/心音.txt"
+    "template":"templates/allium.txt"
 }

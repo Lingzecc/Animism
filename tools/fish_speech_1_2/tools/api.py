@@ -405,7 +405,7 @@ def parse_args():
         default="checkpoints/fish-speech-1.2-sft/firefly-gan-vq-fsq-4x1024-42hz-generator.pth",
     )
     parser.add_argument("--decoder-config-name", type=str, default="firefly_gan_vq")
-    parser.add_argument("--device", type=str, default="cuda")
+    parser.add_argument("--device", type=str, default="cpu")
     parser.add_argument("--half", action="store_true")
     parser.add_argument("--compile", action="store_true")
     parser.add_argument("--max-text-length", type=int, default=0)
@@ -480,3 +480,8 @@ if __name__ == "__main__":
     logger.info(f"Warming up done, starting server at http://{args.listen}")
     host, port = args.listen.split(":")
     uvicorn.run(app, host=host, port=int(port), workers=args.workers, log_level="info")
+
+def start_fish(host="http://127.0.0.1" , port="8000", workers=1):
+    import uvicorn
+    logger.info(f"Warming up done, starting server at http://{host}:{port}")
+    uvicorn.run(app, host=host, port=int(port), workers=workers, log_level="info")

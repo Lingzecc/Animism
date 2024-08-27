@@ -1,6 +1,7 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 from load_config import Load_Config
 import torch
+
 # 初始化参数
 cfg = Load_Config()
 config = cfg.get_config()
@@ -9,7 +10,7 @@ model_cache_path = config['model_cache_path']
 device = config['device']
 fine_weight = config["finetune_weight_path"] + "epoch_2"
 template_path = config["template"]
-
+# 获取模板
 def get_template(template_path):
     with open(template_path, "r", encoding="UTF-8") as f:  # 打开文件
         system_template = f.read()
@@ -29,7 +30,7 @@ generate_config = {
         "user_token_id": 3,
         "bot_token_id": 4
     }
-
+# 加载模型（地址里模型是空的，需要自己下载）
 tokenizer = AutoTokenizer.from_pretrained(model_name_or_path, trust_remote_code=True)
 model = AutoModelForCausalLM.from_pretrained(model_name_or_path, 
                                              torch_dtype=torch.bfloat16, 
@@ -62,12 +63,15 @@ def init_chat_template(generate_config):
     return system_start_ids, user_start_ids, bot_start_ids, system_ids
 
 
-
-model_input = [{"role": "system", "content": system_message}]
-system_start_ids, user_start_ids, bot_start_ids, system_ids = init_chat_template(generate_config)
-history_outputs = system_ids
-print("=====预设生成参数:", generate_config)
-    query : str = ""
+# 模板
+template = [{"role": "system", "content": system_message}]
+def chat(template=template, query="你好，你可以简单介绍一下你自己吗？"):
+    system_start_ids, user_start_ids, bot_start_ids, system_ids = init_chat_template(generate_config)
+    history_outputs = system_ids
+    print("=====预设生成参数:", generate_config)
+    model_input : list = template
+    # 输入
+    query : str = query
     model_input.append({"role": "user", "content": query})
     inputs = tokenizer.encode(query, return_tensors="pt").to(model.device)
     inputs = torch.concat([history_outputs, user_start_ids, inputs, bot_start_ids], dim=-1).long()
@@ -81,6 +85,6 @@ print("=====预设生成参数:", generate_config)
     # 删除</s>
     if history_outputs[0][-1] == 2:
         history_outputs = history_outputs[:, :-1]
-
+    # 模型输出
     outputs = tokenizer.decode(history_outputs[0][len(inputs[0]):])
     return outputs

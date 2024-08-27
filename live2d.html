@@ -15,7 +15,7 @@
 <script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.2/dist/browser/pixi.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/index.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/extra.min.js"></script>
-<script src="dist/recorder.js"></script>
+<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
 <canvas id=canvas></canvas>
 <button id="shoubing">手柄</button>
 <button id="jkbao">jkbao</button>
@@ -41,7 +41,7 @@
     };
 
     mediaRecorder.onstop = async () => {
-      const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+      const audioBlob = new Blob(audioChunks, { type: "audio/webm; codecs=opus" });
       const formData = new FormData();
       formData.append('audioFile', audioBlob, 'recorded_audio.webm');
 
@@ -100,12 +100,6 @@
       //模型位置坐标
       model.y = innerHeight * 0.01;
       model.x = innerWidth * 0.125;
-
-      const setMouthOpenY = v => {
-        v = Math.max(0, Math.min(1, v));
-        model.internalModel.coreModel.setParameterValueById('ParamMouthOpenY', v);
-      }
-
       document.getElementById("shoubing").onclick = () => {
         model.expression("shoubing");
       }
@@ -119,6 +113,32 @@
       document.getElementById("bizui").onclick = () => {
         setMouthOpenY(0)
       }
+      // 口型大小定义
+      const setMouthOpenY = v => {
+        v = Math.max(0, Math.min(1, v));
+        model.internalModel.coreModel.setParameterValueById('ParamMouthOpenY', v);
+      }
+      // ajax异步检测
+      setInterval(() => {
+        $.ajax({
+          type: "GET",
+          url: "/api/get_mouth_y",
+          dataType: 'json',
+          async: true,
+          success(data) {
+            setMouthOpenY(parseFloat(data.y))
+            if (parseFloat(data.y) !== 0) {
+              // 如果y值不是0，播放音频  
+              if (audioElement.paused) {
+                var audioElement = new Audio('/audio/tmp.wav');
+                audioElement.play();
+              }
+            }
+          },
+        });
+      }, 10)
+
+
     });
 
   })();
