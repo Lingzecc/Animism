@@ -38,6 +38,9 @@ def record_audio2wav():
         return '文件上传成功'  
 
 # 开口大小文件路由
+"""
+引用https://juejin.cn/post/7242279345136861241的代码进行修改
+"""
 @app.route('/api/get_mouth_y')
 def mouth():
     with open("data/tts_output/tmp.txt", "r") as f:
