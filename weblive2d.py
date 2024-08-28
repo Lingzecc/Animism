@@ -39,7 +39,7 @@ def record_audio2wav():
 
 # 开口大小文件路由
 @app.route('/api/get_mouth_y')
-def api_get_one_account():
+def mouth():
     with open("data/tts_output/tmp.txt", "r") as f:
         return json.dumps({
             "y": f.read()
