@@ -88,3 +88,5 @@ def chat(template=template, query="你好，你可以简单介绍一下你自己
     # 模型输出
     outputs = tokenizer.decode(history_outputs[0][len(inputs[0]):])
     return outputs
+
+print(chat("你好，介绍你自己"))
