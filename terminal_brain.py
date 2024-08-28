@@ -1,5 +1,5 @@
 from tools.asr import recognize_speech
-from tools.llm import chat
+from llm import chat
 from tools.tts import tts_and_play_audio
 
 def dialogue():
