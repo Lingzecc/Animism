@@ -86,7 +86,6 @@
 
     const models = await Promise.all([
       live2d.Live2DModel.from("assets/ariu/ariu.model3.json")
-      // live2d.Live2DModel.from("https://cdn.jsdelivr.net/gh/guansss/pixi-live2d-display/test/assets/shizuku/shizuku.model.json")
     ]);
 
     models.forEach((model) => {
@@ -119,7 +118,7 @@
         model.internalModel.coreModel.setParameterValueById('ParamMouthOpenY', v);
       }
       // ajax异步检测
-      // 引用https://juejin.cn/post/7242279345136861241的代码进行修改
+      // 引用自https://juejin.cn/post/7242279345136861241修改
       setInterval(() => {
         $.ajax({
           type: "GET",
