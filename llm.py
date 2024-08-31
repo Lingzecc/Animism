@@ -7,7 +7,8 @@ cfg = Load_Config()
 config = cfg.get_config()
 model_name_or_path = config['model_name_or_path']
 model_cache_path = config['model_cache_path']
-device = config['device']
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+print(device)
 fine_weight = config["finetune_weight_path"] + "epoch_2"
 template_path = config["template"]
 # 获取模板
