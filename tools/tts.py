@@ -64,6 +64,9 @@ def tts(text, host, port, tmp_audio_path):
         print(response.json())
         
 # 根据语音音频转数字写入文本,通过ajax异步检测文本变化实现口型实时操作
+"""
+引用https://juejin.cn/post/7242279345136861241的代码进行修改
+"""
 def tts_and_play_audio(text, tmp_audio_path='data/tts_output'):
     # tts(text, host, port, tmp_audio_path)
     pygame.mixer.init()

@@ -7,7 +7,8 @@ cfg = Load_Config()
 config = cfg.get_config()
 model_name_or_path = config['model_name_or_path']
 model_cache_path = config['model_cache_path']
-device = config['device']
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+print(device)
 fine_weight = config["finetune_weight_path"] + "epoch_2"
 template_path = config["template"]
 # 获取模板
@@ -88,3 +89,5 @@ def chat(template=template, query="你好，你可以简单介绍一下你自己
     # 模型输出
     outputs = tokenizer.decode(history_outputs[0][len(inputs[0]):])
     return outputs
+
+print(chat("你好，介绍你自己"))

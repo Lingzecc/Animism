@@ -19,7 +19,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER    
 # 获取前端音频保存到UPLOAD_FOLDER
 @app.route('/upload', methods=['POST'])  
-def upload_file():  
+def record_audio2wav():  
     if 'audioFile' not in request.files:  
         flash('没有文件部分')  
         return redirect(request.url)  
@@ -38,8 +38,11 @@ def upload_file():
         return '文件上传成功'  
 
 # 开口大小文件路由
+"""
+引用https://juejin.cn/post/7242279345136861241的代码进行修改
+"""
 @app.route('/api/get_mouth_y')
-def api_get_one_account():
+def mouth():
     with open("data/tts_output/tmp.txt", "r") as f:
         return json.dumps({
             "y": f.read()

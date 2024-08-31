@@ -13,6 +13,7 @@ pandas
 trl
 typing
 pyaudio
+pygame
 ffmpeg
 torchaudio
 webrtcvad
@@ -37,3 +38,4 @@ einx[torch]==0.2.2
 zstandard>=0.22.0
 pydub
 faster_whisper
+moviepy
