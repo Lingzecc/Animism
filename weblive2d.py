@@ -39,7 +39,7 @@ def record_audio2wav():
 
 # 开口大小文件路由
 """
-引用https://juejin.cn/post/7242279345136861241的代码进行修改
+引用自https://juejin.cn/post/7242279345136861241
 """
 @app.route('/api/get_mouth_y')
 def mouth():
