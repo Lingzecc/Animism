@@ -6,11 +6,15 @@
 
 想法：机器没有感情，但人有，我们希望制作一个能映射人情感的AI。可以陪伴在需要的人身边，我们认为陪伴应该是相互的需求与回应，我对你的依赖和你对我的需求，对彼此不会厌烦，我们认为陪伴就是在被需要时简单的一句：”我在“。我们希望能令他人知道技术理解模型后依然认为她有感情，我们愿为此不断打磨，致力于完成”万物有灵“。
 
-模型和live2d：
+TTS：
 
 [fishaudio/fish-speech: Brand new TTS solution (github.com)](https://github.com/fishaudio/fish-speech)
 
+LLM：
+
 [bilibili/Index-1.9B: A SOTA lightweight multilingual LLM (github.com)](https://github.com/bilibili/Index-1.9B)
+
+pixi-live2d：
 
 [guansss/pixi-live2d-display: A PixiJS plugin to display Live2D models of any kind. (github.com)](https://github.com/guansss/pixi-live2d-display)
 
