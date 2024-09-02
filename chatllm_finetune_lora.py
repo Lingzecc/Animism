@@ -62,11 +62,11 @@ def process_func(example):
 
         system_default = system_message
         system = example.get("system", system_default)
-        human = example['human']
-        assistant = example['assistant']
+        user_input = example['input']
+        ai_output = example['output']
 
-        instruction = tokenizer(f"<unk>{system}reserved_0{human}reserved_1", add_special_tokens=False)
-        response = tokenizer(f"{assistant}", add_special_tokens=False)
+        instruction = tokenizer(f"<unk>{system}reserved_0{user_input}reserved_1", add_special_tokens=False)
+        response = tokenizer(f"{ai_output}", add_special_tokens=False)
         input_ids = instruction["input_ids"] + response["input_ids"] + [tokenizer.pad_token_id]
         attention_mask = instruction["attention_mask"] + response["attention_mask"] + [1]
         labels = [-100] * len(instruction["input_ids"]) + response["input_ids"] + [tokenizer.pad_token_id]  
