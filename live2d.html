@@ -3,7 +3,6 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
   <script src="https://cdn.jsdelivr.net/gh/dylanNew/live2d/webgl/Live2D/lib/live2d.min.js"></script>
@@ -16,21 +15,84 @@
 <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/index.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/extra.min.js"></script>
 <script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
-<canvas id=canvas></canvas>
-<button id="shoubing">手柄</button>
-<button id="jkbao">jkbao</button>
-<button id="zhangzui">张嘴</button>
-<button id="bizui">闭嘴</button>
-<button id="start">开始录音</button>
-<button id="stop">停止录音</button>
-<div id="control"></div>
+<style>
+  .input-container {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* 使子元素在容器的右侧对齐 */
+  }
 
+  #inputBox {
+    width: 300px;
+    height: 50px;
+    background-color: #f6f2f289;
+    padding: 25px;
+    margin-bottom: 10px;
+    /* 与按钮之间留点空间 */
+  }
+
+  .button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    /* 可选，增加按钮之间的间隔 */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .input-container {
+    display: flex;
+    /* 使用Flexbox */
+    align-items: center;
+    /* 使子元素在交叉轴上的对齐方式为中心 */
+  }
+
+  .input-container input {
+    flex: 1;
+    /* 输入框占据除控件外的所有剩余空间 */
+    margin-right: 10px;
+    /* 右边距，给控件留出空间 */
+  }
+
+  .controls {
+    display: flex;
+    /* 控件内部也使用Flexbox布局 */
+    gap: 10px;
+    /* 控件之间的间距 */
+  }
+</style>
+<div class="input-container">
+  <input type="text" id="inputBox" placeholder="输入内容后回车保存">
+  <button class="button" id="recordButton">对话</button>
+</div>
+<canvas id="canvas" width="800" height="600"></canvas>
 
 <script>
+
+
+  // 录音块
+
   let mediaRecorder;
   let audioChunks = [];
+  let isRecording = false;
+
+  const startOrStopRecording = async () => {
+    if (!isRecording) {
+      startRecording();
+    } else {
+      stopRecording();
+    }
+  };
 
   const startRecording = async () => {
+    isRecording = true;
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     mediaRecorder = new MediaRecorder(stream);
 
@@ -58,6 +120,8 @@
       // 清理资源  
       audioChunks = [];
       mediaRecorder.stream.getTracks().forEach(track => track.stop());
+      mediaRecorder = null; // 可选：重置mediaRecorder为null  
+      isRecording = false; // 更新录音状态  
     };
 
     mediaRecorder.start();
@@ -69,77 +133,103 @@
     console.log("录音停止");
   };
 
-  document.getElementById('start').addEventListener('click', startRecording);
-  document.getElementById('stop').addEventListener('click', stopRecording);
+  // 绑定按钮点击事件  
+  document.getElementById('recordButton').addEventListener('click', startOrStopRecording);
+
+
+
+  // 皮套块
 
   // 将 PIXI 暴露到 window 上，这样插件就可以通过 window.PIXI.Ticker 来自动更新模型
   window.PIXI = PIXI;
   const live2d = PIXI.live2d;
+  window.onload = function () {
+    (async function main() {
+      const app = new PIXI.Application({
+        view: document.getElementById("canvas"),
+        autoStart: true,
+        resizeTo: window,
+        backgroundColor: 0x333333
+      });
+      // 皮套路径
+      const models = await Promise.all([
+        live2d.Live2DModel.from("assets/ariu/ariu.model3.json")
+      ]);
 
-  (async function main() {
-    const app = new PIXI.Application({
-      view: document.getElementById("canvas"),
-      autoStart: true,
-      resizeTo: window,
-      backgroundColor: 0x333333
-    });
+      models.forEach((model) => {
+        app.stage.addChild(model);
+        const scaleX = (window.innerWidth * 1) / model.width;
+        const scaleY = (window.innerHeight * 2.5) / model.height;
 
-    const models = await Promise.all([
-      live2d.Live2DModel.from("assets/ariu/ariu.model3.json")
-    ]);
+        // 模型大小
+        model.scale.set(Math.min(scaleX, scaleY));
+        //模型位置坐标
+        model.y = innerHeight * 0.01;
+        model.x = innerWidth * 0.125;
+        // 口型大小定义
+        const setMouthOpenY = v => {
+          v = Math.max(0, Math.min(1, v));
+          model.internalModel.coreModel.setParameterValueById('ParamMouthOpenY', v);
+        }
 
-    models.forEach((model) => {
-      app.stage.addChild(model);
 
-      const scaleX = (innerWidth * 1) / model.width;
-      const scaleY = (innerHeight * 2.5) / model.height;
+        // 音频播放块
 
-      // 模型大小
-      model.scale.set(Math.min(scaleX, scaleY));
-      //模型位置坐标
-      model.y = innerHeight * 0.01;
-      model.x = innerWidth * 0.125;
-      document.getElementById("shoubing").onclick = () => {
-        model.expression("shoubing");
-      }
-      document.getElementById("jkbao").onclick = () => {
-        model.expression("jkbao");
-      }
-      // 1张嘴0闭嘴
-      document.getElementById("zhangzui").onclick = () => {
-        setMouthOpenY(1)
-      }
-      document.getElementById("bizui").onclick = () => {
-        setMouthOpenY(0)
-      }
-      // 口型大小定义
-      const setMouthOpenY = v => {
-        v = Math.max(0, Math.min(1, v));
-        model.internalModel.coreModel.setParameterValueById('ParamMouthOpenY', v);
-      }
-      // ajax异步检测
-      // 引用自https://juejin.cn/post/7242279345136861241修改
-      setInterval(() => {
-        $.ajax({
-          type: "GET",
-          url: "/api/get_mouth_y",
-          dataType: 'json',
-          async: true,
-          success(data) {
-            setMouthOpenY(parseFloat(data.y))
-            if (parseFloat(data.y) !== 0) {
-              // 如果y值不是0，播放音频  
-              if (audioElement.paused) {
-                var audioElement = new Audio('/audio/tmp.wav');
-                audioElement.play();
-              }
-            }
-          },
+        // 创建 AudioContext  
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        // 加载音频文件的函数  
+        function loadAndPlayAudio(url) {
+          fetch(url)
+            .then(response => response.arrayBuffer())
+            .then(arrayBuffer => audioContext.decodeAudioData(arrayBuffer))
+            .then(audioBuffer => {
+              // 创建 AudioBufferSourceNode 并设置其 buffer  
+              const source = audioContext.createBufferSource();
+              source.buffer = audioBuffer;
+
+              // 连接到目的地（通常是扬声器）  
+              source.connect(audioContext.destination);
+
+              // 开始播放  
+              source.start();
+            })
+            .catch(error => console.error('Error loading audio:', error));
+        }
+
+
+
+        // 输入框相关代码  
+        let inputContent = ''; // 用于保存输入内容的变量  
+
+        document.getElementById('inputBox').addEventListener('keypress', function (e) {
+          if (e.key === 'Enter') { // 检测是否按下了回车键  
+            inputContent = this.value; // 读取输入框的内容  
+            console.log('输入内容已保存：', inputContent); // 打印到控制台，或进行其他处理  
+            this.value = ''; // 可选：清空输入框  
+          }
         });
-      }, 10)
 
 
-    });
 
-  })();
+        // ajax异步——口型检测
+        // 引用自https://juejin.cn/post/7242279345136861241
+        setInterval(() => {
+          $.ajax({
+            type: "GET",
+            url: "/api/mouth",
+            dataType: 'json',
+            success(data) {
+              // 调用口型函数，7毫秒请求一次tmp.txt文件获取口型数值
+              setMouthOpenY(parseFloat(data.y))
+            }
+          });
+        }, 7); // 每7毫秒检查一次
+
+
+      });
+
+    })();
+  }
+
 </script>
