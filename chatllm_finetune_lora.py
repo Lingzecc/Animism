@@ -1,10 +1,11 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, DataCollatorForSeq2Seq
+from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, DataCollatorForSeq2Seq, Trainer, AutoConfig
 from datasets import Dataset
 from peft import get_peft_model, LoraConfig, TaskType
 from load_config import Load_Config
 import torch
-from trl import SFTTrainer
 import pandas as pd
+import os
+import logger
 # 初始化参数
 cfg = Load_Config()
 config = cfg.get_config()
@@ -34,14 +35,15 @@ def get_template(template_path):
     return system_template
 
 system_message = get_template(template_path)
-
+config = AutoConfig.from_pretrained(model_name_or_path, trust_remote_code=True)
+config.use_cache = False
 peft_config = LoraConfig(
     inference_mode=False,
     task_type=TaskType.CAUSAL_LM, r=8, 
     lora_alpha=32, lora_dropout=0.1, target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
 )
 tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
-model = AutoModelForCausalLM.from_pretrained(model_name_or_path, torch_dtype=torch.bfloat16, trust_remote_code=True)
+model = AutoModelForCausalLM.from_pretrained(model_name_or_path, torch_dtype=torch.bfloat16, config=config, trust_remote_code=True)
 
 
 model = get_peft_model(model, peft_config)
@@ -79,13 +81,35 @@ def process_func(example):
             "attention_mask": attention_mask,
             "labels": labels
         }
+WEIGHTS_NAME = "pytorch_model.bin"
+TRAINING_ARGS_NAME = "training_args.bin"
+
+class LoRATrainer(Trainer):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def save_model(self, output_dir=None, _internal_call=False):
+        output_dir = output_dir if output_dir is not None else self.args.output_dir
+        os.makedirs(output_dir, exist_ok=True)
+        logger.info(f"Saving model checkpoint to {output_dir}")
+        model_to_save = self.model
+        state_dict = {k: v.to("cpu") for k, v in model_to_save.named_parameters() if v.requires_grad}
+        # Using Hugging Face's save_pretrained instead of PyTorch's torch.save
+        model_to_save.save_pretrained(output_dir, state_dict=state_dict, save_function=torch.save,safe_serialization=False)
+        
+        # Save tokenizer and training arguments as usual
+        if self.tokenizer is not None:
+            self.tokenizer.save_pretrained(output_dir)
+
+        print(self.args)
+        torch.save(self.args, os.path.join(output_dir, TRAINING_ARGS_NAME, ))
 
 
 tokenizer.padding_side = 'right'
 tokenizer.pad_token_id = tokenizer.eos_token_id
 tokenizer.pad_token = '<|endoftext|>'
 tokenized_id = data.map(process_func, remove_columns=data.column_names)
-trainer = SFTTrainer(
+trainer = LoRATrainer(
     model=model,
     args=training_args,
     train_dataset=tokenized_id,
