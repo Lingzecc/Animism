@@ -481,7 +481,7 @@ if __name__ == "__main__":
     host, port = args.listen.split(":")
     uvicorn.run(app, host=host, port=int(port), workers=args.workers, log_level="info")
 
-def start_fish(host="http://127.0.0.1" , port="8000", workers=1):
-    import uvicorn
-    logger.info(f"Warming up done, starting server at http://{host}:{port}")
-    uvicorn.run(app, host=host, port=int(port), workers=workers, log_level="info")
+# def start_fish(host="http://127.0.0.1" , port="8000", workers=1):
+#     import uvicorn
+#     logger.info(f"Warming up done, starting server at http://{host}:{port}")
+#     uvicorn.run(app, host=host, port=int(port), workers=workers, log_level="info")
