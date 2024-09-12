@@ -29,4 +29,4 @@ def recognize_speech(wav_file=audio_file_path, model=model, chunk_size=chunk_siz
                             decoder_chunk_look_back=decoder_chunk_look_back)
         return str(res)
 test = recognize_speech()
-print(test)
+# print(test)
