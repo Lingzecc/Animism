@@ -34,7 +34,7 @@ ref_text = None
 if ref_text:
     ref_text = read_ref_text(ref_text)
 # 开启fish-speech的api后访问api转换返回语音
-def tts(text, host, port, tmp_audio_path):
+def tts(text, host, port, tmp_audio_path='data/tts_output'):
     url = f"http://{host}:{port}/v1/invoke"
     data = {
         "text": text,
@@ -65,10 +65,9 @@ def tts(text, host, port, tmp_audio_path):
         
 # 根据语音音频转数字写入文本,通过ajax异步检测文本变化实现口型实时操作
 """
-引用https://juejin.cn/post/7242279345136861241的代码进行修改
+引用自https://juejin.cn/post/7242279345136861241
 """
-def tts_and_play_audio(text, tmp_audio_path='data/tts_output'):
-    # tts(text, host, port, tmp_audio_path)
+def tts_and_play_audio(tmp_audio_path='data/tts_output'):
     pygame.mixer.init()
     pygame.mixer.music.load(f"{tmp_audio_path}/tmp.wav")  
     pygame.mixer.music.set_volume(0.8) 
@@ -78,9 +77,9 @@ def tts_and_play_audio(text, tmp_audio_path='data/tts_output'):
     x = x  - min(x)
     x = x  / max(x)
     x= np.log(x) + 1
-    x = x  / max(x) * 1.4
+    x = x  / max(x) * 1.5
 
-    pygame.mixer.music.play()
+    # pygame.mixer.music.play()
     s_time = time.time()
     try:
         for _ in range(int(len(x) / 800)):
@@ -97,4 +96,6 @@ def tts_and_play_audio(text, tmp_audio_path='data/tts_output'):
     time.sleep(0.1)
     with open(f"{tmp_audio_path}/tmp.txt", "w") as f:
         f.write("0")
-tts_and_play_audio(text="")
+# while True:
+#     tts_and_play_audio(text="")
+# tts_and_play_audio(text="")
