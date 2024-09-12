@@ -68,7 +68,7 @@ def init_chat_template(generate_config):
 # 模板
 template = [{"role": "system", "content": system_message}]
 # 模型封装成函数
-def chat(query="你好，你可以简单介绍一下你自己吗？", template=template):
+def chat(query, template=template):
     system_start_ids, user_start_ids, bot_start_ids, system_ids = init_chat_template(generate_config)
     history_outputs = system_ids
     print("=====预设生成参数:", generate_config)
@@ -92,6 +92,6 @@ def chat(query="你好，你可以简单介绍一下你自己吗？", template=t
     outputs = tokenizer.decode(history_outputs[0][len(inputs[0]):])
     return outputs
 
-while True:
-    t = input("说：")
-    print(chat(t))
+# while True:
+#     t = input("说：")
+#     print(chat(t))
