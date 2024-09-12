@@ -23,6 +23,8 @@ pixi-live2d：
 
 [guansss/pixi-live2d-display: A PixiJS plugin to display Live2D models of any kind. (github.com)](https://github.com/guansss/pixi-live2d-display)
 
-相关参考：
+参考：
 
 [前端+Python实现Live2D虚拟直播姬前端+Python实现Live2D虚拟直播姬。本文通过Python和前端，接 - 掘金 (juejin.cn)](https://juejin.cn/post/7242279345136861241)
+
+[给网页上的 Live2D 添加语音口型同步 · 议题 #7 · itorr/itorr (github.com)](https://github.com/itorr/itorr/issues/7)
