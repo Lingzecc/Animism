@@ -86,53 +86,6 @@ def text_to_speech():
     # response_llm = chat(text)
     # tts(response_llm, "127.0.0.1", "8000", tmp_audio_path='data/tts_output')
     return send_file("data/tts_output/tmp.wav", mimetype='audio/wav')
-    
-
-
-# 开口大小文件路由
-"""
-引用自https://juejin.cn/post/7242279345136861241
-"""
-@app.route('/api/mouth', methods=['GET'])
-def mouth():
-    with open("data/tts_output/tmp.txt", "r") as f:
-        return json.dumps({
-            "y": f.read()
-        })  
-
-
-       
-@app.route('/mouthY', methods=['POST'])  
-def mouthY(tmp_audio_path='data/tts_output'):
-    pygame.mixer.init()
-    pygame.mixer.music.load(f"{tmp_audio_path}/tmp.wav")  
-    pygame.mixer.music.set_volume(0.8) 
-
-    x , sr = librosa.load(f"{tmp_audio_path}/tmp.wav", sr=8000)
-
-    x = x  - min(x)
-    x = x  / max(x)
-    x= np.log(x) + 1
-    x = x  / max(x) * 1.5
-    # 调用本机扬声器
-    pygame.mixer.music.play()
-    s_time = time.time()
-    try:
-        for _ in range(int(len(x) / 800)):
-            it = x[int((time.time() - s_time) * 8000)+1]
-            # print(it)
-            if it < 0:
-                it = 0
-            with open(f"{tmp_audio_path}/tmp.txt", "w") as f:
-                f.write(str(float(it)))
-            time.sleep(0.1)
-    except:
-        pass
-
-    time.sleep(0.1)
-    with open(f"{tmp_audio_path}/tmp.txt", "w") as f:
-        f.write("0")
-
 
 
 
