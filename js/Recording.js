@@ -68,4 +68,4 @@
   };
 
   // 绑定按钮点击事件  
-  document.getElementById('recordButton').addEventListener('click', startOrStopRecording);
+document.getElementById('recordButton').addEventListener('click', startOrStopRecording);

@@ -1,4 +1,6 @@
-  // 皮套块
+
+
+// 皮套块
   // 将 PIXI 暴露到 window 上，这样插件就可以通过 window.PIXI.Ticker 来自动更新模型
   window.PIXI = PIXI;
   const live2d = PIXI.live2d;
@@ -40,7 +42,7 @@
           dataType: 'json',
           success(data) {
             // 调用口型函数，7毫秒请求一次tmp.txt文件获取口型数值
-            setMouthOpenY(parseFloat(data.y))
+            setMouthOpenY(parseFloat(audioElement))
           }
         });
       }, 7); // 每7毫秒检查一次
