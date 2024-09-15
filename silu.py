@@ -1,2 +1,0 @@
-def await_react():
-    

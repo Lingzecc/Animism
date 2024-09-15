@@ -1,15 +1,19 @@
-from flask import Flask, send_from_directory, request, flash, redirect, send_file, jsonify
+from flask import Flask, send_from_directory, request, flash, redirect, send_file
 import os
 import json
 import moviepy.video.io.ffmpeg_tools
-from llm import chat
-from tools.listen import recognize_speech
-from tools.tts import tts
+# from llm import chat
+# from tools.listen import recognize_speech
+# from tools.tts import tts
 import pygame
 import time
 import numpy as np
 import librosa
+# from funasr import AutoModel
+from flask_cors import CORS
+
 app = Flask(__name__)
+CORS(app)
 
 # 网页投射
 @app.route('/')
@@ -23,6 +27,15 @@ def web():
 def live2d(path):
     return send_from_directory('./assets/',path)
 
+# 将js文件传输到路由
+@app.route('/js/<path:path>')
+def js(path):
+    return send_from_directory('./js/',path)
+
+# 将css文件传输到路由
+@app.route('/css/<path:path>')
+def css(path):
+    return send_from_directory('./css/',path)
 
 
 # 音频位置
@@ -30,6 +43,14 @@ UPLOAD_FOLDER = 'data/record_audio/'
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+# model = AutoModel(model="paraformer-zh-streaming", model_revision="v2.0.4")  # 初始化语音识别模型。
+# chunk_size = [0, 10, 5]  # 定义录音块大小参数。
+# encoder_chunk_look_back = 4  # 定义编码器自注意力的回看录音块数。
+# decoder_chunk_look_back = 1  # 定义解码器交叉注意力的回看编码器录音块数。
+# audio_folder_path = 'data/record_audio/'
+# audio_file_name = 'recorded_audio.wav'
+# audio_file_path = os.path.join(audio_folder_path, audio_file_name)
 
 
 # 获取前端音频保存到UPLOAD_FOLDER
@@ -50,7 +71,12 @@ def record_audio2wav():
         # 转wav
         moviepy.video.io.ffmpeg_tools.ffmpeg_extract_audio(filepath, towavfilepath)
         print(f"音频已成功转换为WAV格式，并保存到{filepath}")
-        return '文件上传成功'
+        # response_asr = recognize_speech(audio_file_path, model, chunk_size, encoder_chunk_look_back, decoder_chunk_look_back)
+        #添加休息时间，避免CPU过载
+        time.sleep(1)  # 休息1秒
+        # response_llm = chat(response_asr)
+        # tts(response_llm, "127.0.0.1", "8000", tmp_audio_path='data/tts_output')
+        return send_file("data/tts_output/tmp.wav", mimetype='audio/wav')
 
 response_llm = ""
 
@@ -59,7 +85,7 @@ def text_to_speech():
     text = request.form['text']
     # response_llm = chat(text)
     # tts(response_llm, "127.0.0.1", "8000", tmp_audio_path='data/tts_output')
-    return send_file("D:/PORJECT/Animism/Allium/data/tts_output/tmp.wav", mimetype='audio/wav')
+    return send_file("data/tts_output/tmp.wav", mimetype='audio/wav')
     
 
 
@@ -89,7 +115,7 @@ def mouthY(tmp_audio_path='data/tts_output'):
     x= np.log(x) + 1
     x = x  / max(x) * 1.5
     # 调用本机扬声器
-    # pygame.mixer.music.play()
+    pygame.mixer.music.play()
     s_time = time.time()
     try:
         for _ in range(int(len(x) / 800)):
