@@ -18,7 +18,7 @@ CORS(app)
 # 网页投射
 @app.route('/')
 def web():
-    return send_file('./live2d.html')
+    return send_file('./web.html')
 
 
 
