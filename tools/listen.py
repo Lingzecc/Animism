@@ -151,16 +151,16 @@ def listen_and_recognize(model, chunk_size, encoder_chunk_look_back, decoder_chu
         time.sleep(1)  # 休息1秒
 
 
-def main():
-    # main函数是程序的入口点。
-    model = AutoModel(model="paraformer-zh-streaming", model_revision="v2.0.4")  # 初始化语音识别模型。
-    chunk_size = [0, 10, 5]  # 定义录音块大小参数。
-    encoder_chunk_look_back = 4  # 定义编码器自注意力的回看录音块数。
-    decoder_chunk_look_back = 1  # 定义解码器交叉注意力的回看编码器录音块数。
+# def main():
+#     # main函数是程序的入口点。
+#     model = AutoModel(model="paraformer-zh-streaming", model_revision="v2.0.4")  # 初始化语音识别模型。
+#     chunk_size = [0, 10, 5]  # 定义录音块大小参数。
+#     encoder_chunk_look_back = 4  # 定义编码器自注意力的回看录音块数。
+#     decoder_chunk_look_back = 1  # 定义解码器交叉注意力的回看编码器录音块数。
 
-    # 调用 listen_and_recognize 函数进行持续录音和识别
-    listen_and_recognize(model, chunk_size, encoder_chunk_look_back, decoder_chunk_look_back)
+#     # 调用 listen_and_recognize 函数进行持续录音和识别
+#     listen_and_recognize(model, chunk_size, encoder_chunk_look_back, decoder_chunk_look_back)
 
 
-if __name__ == "__main__":
-    main()  # 程序入口，调用main函数。
+# if __name__ == "__main__":
+#     main()  # 程序入口，调用main函数。

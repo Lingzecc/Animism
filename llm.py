@@ -25,7 +25,7 @@ generate_config = {
         "do_sample":True,
         "top_p":0.8,
         "top_k":5,
-        "temperature": 0.3,
+        "temperature": 0.65,
         "repetition_penalty":1.1,
         "system_message": system_message,
         "sys_token_id": 0,
@@ -76,6 +76,7 @@ def chat(query, template=template):
     # 输入
     query : str = query
     model_input.append({"role": "user", "content": query})
+    print()
     inputs = tokenizer.encode(query, return_tensors="pt").to(model.device)
     inputs = torch.concat([history_outputs, user_start_ids, inputs, bot_start_ids], dim=-1).long()
     history_outputs = model.generate(inputs, 

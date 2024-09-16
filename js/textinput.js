@@ -48,15 +48,17 @@ function speak() {
             requestAnimationFrame(updateFrequency);
             analyser.getByteFrequencyData(dataArray);
 
-            // 简化处理：取中间频率作为代表  
-            let total = 0, average = 0;
-            for (let i = bufferLength / 4; i < bufferLength / 2; i++) {
-              total += dataArray[i];
-            }
-            average = total / (bufferLength / 4);
+            let maxValue = 0;  
+    
+            // 遍历dataArray找到最大值  
+            for (let i = 0; i < bufferLength; i++) {  
+              if (dataArray[i] > maxValue) {  
+                maxValue = dataArray[i];  
+              }  
+            }  
 
             // 将平均频率映射到0到1的范围内  
-            const frequencyRatio = average / 255 * 1.5; // 假设255是最大频率值  
+            const frequencyRatio = maxValue / 255 * 0.65; // 假设255是最大频率值  
             window.setMouthOpenY(frequencyRatio); 
 
           }
