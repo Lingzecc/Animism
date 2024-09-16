@@ -1,0 +1,10 @@
+语言模型：
+https://modelscope.cn/models/indexteam/index-1.9b-character
+语音合成：
+https://modelscope.cn/models/wwweedcn/fish-speech-1.4/files
+自行下载放在此文件夹下:
+models
+    └─Index-1.9B-Character
+    └─checkpoints
+              └─fish-speech-1.2-sft
+包没问题的，这玩意太大了，自己下，就别折腾我了

@@ -23,7 +23,7 @@
 	"Groups": [
 		{
 			"Target": "Parameter",
-			"Name": "Mouth",
+			"Name": "LipSync",
 			"Ids": [
 				"ParamMouthOpenY"
 			]

@@ -5,17 +5,18 @@ import torch
 # 初始化参数
 cfg = Load_Config()
 config = cfg.get_config()
-model_name_or_path = config['model_name_or_path']
-model_cache_path = config['model_cache_path']
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+model_name_or_path = config['model_name_or_path'] # 模型地址
+model_cache_path = config['model_cache_path'] # 模型缓存地址
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") # 判断是否能使用gpu
 print(device)
-fine_weight = config["finetune_weight_path"] + "epoch_2"
-template_path = config["template"]
-# 获取模板
+fine_weight = config["finetune_weight_path"] + "epoch_2" # 微调保存地址
+template_path = config["template"] # 模板地址
+# 读取模板内容
 def get_template(template_path):
     with open(template_path, "r", encoding="UTF-8") as f:  # 打开文件
         system_template = f.read()
     return system_template
+# 获取模板
 system_message = get_template(template_path)
 
 # 生成器参数
@@ -24,7 +25,7 @@ generate_config = {
         "do_sample":True,
         "top_p":0.8,
         "top_k":5,
-        "temperature": 0.3,
+        "temperature": 0.65,
         "repetition_penalty":1.1,
         "system_message": system_message,
         "sys_token_id": 0,
@@ -42,7 +43,7 @@ generator = pipeline("text-generation",
                     tokenizer=tokenizer, 
                     trust_remote_code=True)
 
-
+# 内容初始化
 def init_chat_template(generate_config):
     # Special Token 编号
     sys_token_id = generate_config['sys_token_id'] 
@@ -66,7 +67,8 @@ def init_chat_template(generate_config):
 
 # 模板
 template = [{"role": "system", "content": system_message}]
-def chat(template=template, query="你好，你可以简单介绍一下你自己吗？"):
+# 模型封装成函数
+def chat(query, template=template):
     system_start_ids, user_start_ids, bot_start_ids, system_ids = init_chat_template(generate_config)
     history_outputs = system_ids
     print("=====预设生成参数:", generate_config)
@@ -74,6 +76,7 @@ def chat(template=template, query="你好，你可以简单介绍一下你自己
     # 输入
     query : str = query
     model_input.append({"role": "user", "content": query})
+    print()
     inputs = tokenizer.encode(query, return_tensors="pt").to(model.device)
     inputs = torch.concat([history_outputs, user_start_ids, inputs, bot_start_ids], dim=-1).long()
     history_outputs = model.generate(inputs, 
@@ -90,4 +93,6 @@ def chat(template=template, query="你好，你可以简单介绍一下你自己
     outputs = tokenizer.decode(history_outputs[0][len(inputs[0]):])
     return outputs
 
-print(chat("你好，介绍你自己"))
+# while True:
+#     t = input("说：")
+#     print(chat(t))

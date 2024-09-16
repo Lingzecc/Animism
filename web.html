@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/dylanNew/live2d/webgl/Live2D/lib/live2d.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.2/dist/browser/pixi.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/extra.min.js"></script>
+  <script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/audiocontext/2.1.0/AudioContext.min.js"></script>
+
+
+  <title>Ciallo～ (∠・ω< )⌒★</title>
+</head>
+<link rel="stylesheet" href="css/style.css">
+
+<div class="input-container">
+  <input type="text" id="text" placeholder="输入文字">
+  <button class="text" onclick="speak()">发送</button>
+  <audio id="audio" controls></audio>
+  <button class="voice" id="recordButton">语音</button>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<body>
+  <script src="js/textinput.js"></script>
+  <script src="js/recording.js"></script>
+  <script src="js/live2d.js"></script>
+</body>
