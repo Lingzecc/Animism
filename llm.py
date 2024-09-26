@@ -76,7 +76,6 @@ def chat(query, template=template):
     # 输入
     query : str = query
     model_input.append({"role": "user", "content": query})
-    print()
     inputs = tokenizer.encode(query, return_tensors="pt").to(model.device)
     inputs = torch.concat([history_outputs, user_start_ids, inputs, bot_start_ids], dim=-1).long()
     history_outputs = model.generate(inputs, 
@@ -92,7 +91,6 @@ def chat(query, template=template):
     # 模型输出
     outputs = tokenizer.decode(history_outputs[0][len(inputs[0]):])
     return outputs
-
 # while True:
 #     t = input("说：")
 #     print(chat(t))
