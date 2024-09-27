@@ -6,7 +6,6 @@ import torch
 cfg = Load_Config()
 config = cfg.get_config()
 model_name_or_path = config['model_name_or_path'] # 模型地址
-model_cache_path = config['model_cache_path'] # 模型缓存地址
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu") # 判断是否能使用gpu
 print(device)
 fine_weight = config["finetune_weight_path"] + "epoch_2" # 微调保存地址
@@ -91,6 +90,3 @@ def chat(query, template=template):
     # 模型输出
     outputs = tokenizer.decode(history_outputs[0][len(inputs[0]):])
     return outputs
-# while True:
-#     t = input("说：")
-#     print(chat(t))

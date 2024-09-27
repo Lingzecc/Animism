@@ -11,7 +11,6 @@ import logger
 cfg = Load_Config()
 config = cfg.get_config()
 model_name_or_path = config['model_name_or_path']
-model_cache_path = config['model_cache_path']
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(device)
 # fine_name:微调参数文件名
