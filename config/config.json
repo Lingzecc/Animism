@@ -1,6 +1,5 @@
 {
-    "model_name_or_path": "D:/PORJECT/Animism/ALLIUM_copy/models/Index-1.9B-Character",
-    "model_cache_path": "cache/",
+    "model_name_or_path": "Index-1.9B-Character",
     "finetune_weight_path":"finetune_weight/",
     "template":"templates/allium.txt"
 }

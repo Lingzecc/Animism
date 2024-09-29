@@ -6,11 +6,11 @@ import torch
 import pandas as pd
 import os
 import logger
+
 # 初始化参数
 cfg = Load_Config()
 config = cfg.get_config()
 model_name_or_path = config['model_name_or_path']
-model_cache_path = config['model_cache_path']
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(device)
 # fine_name:微调参数文件名

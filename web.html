@@ -1,33 +1,46 @@
 <!DOCTYPE html>
 <html lang="zh">
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/dylanNew/live2d/webgl/Live2D/lib/live2d.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.2/dist/browser/pixi.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/index.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/extra.min.js"></script>
-  <script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/audiocontext/2.1.0/AudioContext.min.js"></script>
+	<head>
+		<meta charset="UTF-8" />
+		<!--各种各样的JavaScript预设，支持皮套的运行 -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script src="https://cubism.live2d.com/sdk-web/cubismcore/live2dcubismcore.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/gh/dylanNew/live2d/webgl/Live2D/lib/live2d.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.2/dist/browser/pixi.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/index.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/extra.min.js"></script>
+		<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+
+		<!-- Ciallo～ (∠・ω< )⌒★(内心OS：柚子厨蒸鹅心（恼）) -->
+		 <!-- Ciallo～ (∠・ω< )⌒★惹我们柚子厨？某前端要倒大霉喽（演示视频必让你上镜） -->
+		<title>Ciallo～ (∠・ω< )⌒★</title>
+				<!-- 默认CSS为电脑端专用CSS（即“style_form_computer.css”文件） -->
+				<link rel="stylesheet" href="css/style_form_computer.css" id="default_style">
+	</head>
+	<body>
+		<!-- 这是皮套以及网页主体部分 -->
+		<div class="input-container">
+			<!-- 这个框用于输入文字与赛博机娘对话 -->
+			<textarea name="" id="textarea" placeholder="请输入文字"></textarea>
+			<!-- 点一下这个按键，你的话就能送到赛博机娘那里了！（大喜） -->
+			<button class="text" onclick="speak()">发送</button>
+			<!-- 隐藏的播放器，用于播放赛博机娘想说的话 -->
+			<audio id="audio" controls></audio>
+			<!-- 这个按键的作用是录制用户的声音，然后通过下面一堆js执行语音转文字等功能（详见recording.js文件） -->
+			<button class="voice" id="recordButton" onclick="toggleButton()"><img src="img/record_off.png"
+					alt="灯！（光就是意义！）" id="recorder" /><span id="started">开始录音...</span></button>
+		</div>
+		<!-- 皮套本体 -->
+		<div class="container">
+			<canvas id="canvas"></canvas>
+		</div>
 
 
-  <title>Ciallo～ (∠・ω< )⌒★</title>
-</head>
-<link rel="stylesheet" href="css/style.css">
-
-<div class="input-container">
-  <input type="text" id="text" placeholder="输入文字">
-  <button class="text" onclick="speak()">发送</button>
-  <audio id="audio" controls></audio>
-  <button class="voice" id="recordButton">语音</button>
-</div>
-
-<canvas id="canvas"></canvas>
-
-<body>
-  <script src="js/textinput.js"></script>
-  <script src="js/recording.js"></script>
-  <script src="js/live2d.js"></script>
-</body>
+		<!-- 自定义js，用于实现皮套各种各样的功能（ps:前三个js不是我写的，如果有任何问题请咨询梁总） -->
+		<script src="js/textinput.js"></script>
+		<script src="js/recording.js"></script>
+		<script src="js/live2d.js"></script>
+		<script src="js/action.js"></script>
+	</body>
+</html>
