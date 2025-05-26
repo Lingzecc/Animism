@@ -1,0 +1,157 @@
+/* 清除整个页面的默认内外边距,方便后续的修饰 */
+* {
+	margin: 0;
+	padding: 0;
+}
+
+/* 整个页面背景的颜色与皮套背景的颜色相同,与之融为一体 */
+html {
+	background-color: #555555;
+}
+
+.container {
+	display: flex;
+	justify-content: center;
+}
+
+/* 皮套大小默认撑满整个空间 */
+#canvas {
+	width: 100%;
+	height: 100%;
+}
+
+/* 隐藏播放器,具体功能详见web.html第28行注释 */
+#audio {
+	display: none;
+}
+
+/* 这是对话框后面的盒子,用于装对话框以及各个按键 */
+.input-container {
+	/* 前四行,位置固定,距离底边100像素,距离左边800像素,用于定位与居中 */
+	position: absolute;
+	bottom: 100px;
+	transform: translateX(50%);
+	/* 后两行,定义长与宽,用于限制对话框的大小 */
+	width: 800px;
+	height: 200px;
+}
+
+/* 多行文本框的修饰 */
+#textarea {
+	/* 前两行,撑满前面的类名为"input-container"的盒子 */
+	width: 100%;
+	height: 100%;
+	/* 第三四行,清除内外边线,保持美观 */
+	border: none;
+	outline: none;
+	/* 第五六行，不让字沾边,显得更有松弛感 */
+	padding: 20px;
+	margin: 20px;
+	/* 第七行,背景色为半透明的黑色,沉稳大气又不失优雅 */
+	background-color: rgba(0, 0, 0, 0.3);
+	/* 第八行,圆角矩形使得边框无棱无角,有现代感 */
+	border-radius: 10px;
+	/* 第九行,设置字的颜色,因为背景偏黑,所以使用高对比度的白色显示 */
+	color: white;
+	/* 第十行,设置字号,充分地体现了本项目组关爱老人与视障群体的理念 */
+	font-size: 16px;
+	/* 第十一行,不允许调大小(内心OS:如果你瞎几把调,劳资好不容易修饰好的东西不就完蛋了吗？) */
+	resize: none;
+	/* 第十二行,字体设置(实则以程序员的偏好为准（doge）) */
+	font-family: "微软雅黑";
+	/* 可选：添加阴影以增强立体感 */
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* 提交文本的按钮,详见web.html的第26行注释 */
+.text {
+	/* 前三行,相对定位,定位到右下角 */
+	position: absolute;
+	right: -30px;
+	bottom: -40px;
+	/* 第四行，设置内边距,显得有松弛感 */
+	padding: 10px 20px;
+	/* 第五行，无边线，详见第36行注释 */
+	border: none;
+	outline: none;
+	/* 第六行，圆角，详见第44行注释 */
+	border-radius: 5px;
+	/* 第七行,当鼠标悬浮时,光标变为小手,使页面更有互动性 */
+	cursor: pointer;
+	/* 第八行，背景修改为浅绿色 */
+	background-color: #00ff00;
+	/* 第九行，设置字的颜色,使用高对比度 */
+	color: white;
+}
+
+.text:active {
+	/* 当鼠标点击"发送"按钮时,颜色变为深绿色,具有互动性 */
+	background-color: #00aa00;
+}
+
+/* 用于修饰图片按钮(图片是一个简洁的小话筒,用于录音) */
+#recorder {
+	/* 内边距,无需多言（） */
+	margin: 8px;
+}
+
+/* 录音按钮的修饰，详见类名为“text”的相关修饰 */
+.voice {
+	position: absolute;
+	right: 50px;
+	bottom: -40px;
+	border: none;
+	outline: none;
+	border-radius: 20px;
+	cursor: pointer;
+	color: #333333;
+	width: 40px;
+	height: 40px;
+	/* 第十行，背景修改为浅蓝色 */
+	background-color: #46ceff;
+	overflow: hidden;
+	transition: width 0.5s ease;
+	font-size: 16px;
+	line-height: 40px;
+}
+
+#started {
+	position: absolute;
+	left: 100%;
+	white-space: nowrap;
+	transition: left 0.5s ease;
+	padding-left: 0px;
+}
+
+.expanded #started {
+	left: 50px;
+}
+
+.expanded img {
+	position: relative;
+	left: -45px;
+	transition: left 0.5s ease;
+}
+
+.expanded {
+	width: 140px;
+}
+
+.voice:active {
+	/* 详见第82行注释,原理相同,就是悬浮变色 */
+	background-color: #00aaff;
+}
+
+.input-container input {
+	/* 输入框占据除控件外的所有剩余空间 */
+	flex: 1;
+	/* 右边距，给控件留出空间 */
+	margin-right: 10px;
+}
+
+.controls {
+	/* 控件内部也使用Flexbox布局 */
+	display: flex;
+	/* 控件之间的间距 */
+	gap: 20px;
+}

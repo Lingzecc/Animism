@@ -1,0 +1,53 @@
+# 模型配置
+model:
+  name: "D:/models/Index-1.9B-Character"
+  finetune_weight: "finetune_weight/"
+  device: "cpu"
+  generate_config:
+    max_new: 300
+    top_p: 0.8
+    top_k: 5
+    temperature: 0.65
+    repetition_penalty: 1.1
+
+# API配置
+api:
+  tts:
+    url: "https://api.fish.audio/v1/tts"
+    headers:
+      Authorization: "Bearer f56f8b383e8a46e482e0213e942748ff"
+      Content-Type: "application/json"
+    params:
+      chunk_length: 200
+      max_new_tokens: 1024
+      normalize: true
+      format: "wav"
+      mp3_bitrate: 64
+      latency: "normal"
+  
+  # 硅基流动大模型配置
+  silicon_flow:
+    api_url: "https://api.siliconflow.cn/v1/chat/completions"
+    api_key: "sk-rasdkvpgmsbrbcatkkjocqrdlthgxldeajmdehgqlmrurpoq"
+    model_name: "THUDM/GLM-4-9B-0414"
+    generate_config:
+      temperature: 0.7
+      top_p: 0.7
+      top_k: 50
+      max_tokens: 512
+      frequency_penalty: 0.5
+      enable_thinking: false
+      thinking_budget: 4096
+      min_p: 0.05
+
+# 语音识别配置
+asr:
+  model: "paraformer-zh-streaming"
+  model_revision: "v2.0.4"
+  chunk_size: [0, 10, 5]
+  encoder_chunk_look_back: 4
+  decoder_chunk_look_back: 1
+
+# 模板配置
+template:
+  path: "templates/allium.txt"
