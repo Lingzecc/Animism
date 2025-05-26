@@ -1,0 +1,6 @@
+[2025-05-21 14:04:47] INFO [llm.load_model:80] Model loaded successfully from D:/models/Index-1.9B-Character
+[2025-05-21 14:04:47] INFO [llm.initialize:50] LLM processor initialized successfully
+[2025-05-21 14:04:47] WARNING [llm._prepare_system_ids:126] System message is empty
+[2025-05-21 14:04:56] WARNING [llm._prepare_system_ids:126] System message is empty
+[2025-05-21 14:05:00] WARNING [llm._prepare_system_ids:126] System message is empty
+[2025-05-21 14:05:06] INFO [llm.cleanup:195] LLM processor cleaned up successfully

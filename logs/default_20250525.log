@@ -1,0 +1,11 @@
+[2025-05-25 20:44:12] INFO [default.__init__:55] ProcessorFactory initialized
+[2025-05-25 20:44:12] INFO [default.get_silicon_flow_processor:145] Created new Silicon Flow processor
+[2025-05-25 20:44:12] INFO [default.main:43] 成功初始化硅基流动处理器
+[2025-05-25 20:44:12] INFO [default.main:52] 开始生成回复...
+[2025-05-25 20:44:14] ERROR [default.main:65] 发生错误: HTTPSConnectionPool(host='api.siliconflow.ai', port=443): Max retries exceeded with url: /v1/chat/completions (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1007)')))
+[2025-05-25 20:52:15] INFO [default.__init__:55] ProcessorFactory initialized
+[2025-05-25 20:52:15] INFO [default.get_silicon_flow_processor:145] Created new Silicon Flow processor
+[2025-05-25 20:52:15] INFO [default.main:43] 成功初始化硅基流动处理器
+[2025-05-25 20:52:15] INFO [default.main:52] 开始生成回复...
+[2025-05-25 20:52:22] INFO [default.cleanup_processor:125] Cleaned up silicon_flow processor
+[2025-05-25 20:52:22] INFO [default.main:62] 资源已清理
